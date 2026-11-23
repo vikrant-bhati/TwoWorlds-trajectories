@@ -1,0 +1,80 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Error Trajectories</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"><style>
+:root{color-scheme:light;--page:#F5F7FA;--card:#FFFFFF;--ink:#1C2733;--mut:#5D6B7A;--rule:#DDE3EA;--rule2:#EEF1F5;--a:#0E6A8A;
+--fire:#FFF4CC;--firebar:#D99A00;--ok:#1F7A4D;--okbg:#E6F4EC;--bad:#B42318;--badbg:#FDECEA;--set:#0E6A8A;
+--sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+body.s-Discovery{--set:#2a78d6}body.s-Diagnosis{--set:#eb6834}body.s-Calibration{--set:#1baf7a}body.s-Monitoring{--set:#4a3aa7}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--page);color:var(--ink);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+.page{max-width:1180px;margin:0 auto;padding:20px 24px 64px}
+@media (max-width:640px){.page{padding:14px 16px 48px}}
+a{color:var(--a);text-decoration:none}a:hover{text-decoration:underline}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--a);outline-offset:2px;border-radius:3px}
+code,.mono{font-family:var(--mono);font-size:.92em}
+h1{font-size:26px;line-height:1.25;font-weight:600;letter-spacing:-.01em;margin:6px 0 4px}
+h1 code{font-size:.8em;font-weight:500;color:var(--mut);background:none}
+h2{font-size:19px;font-weight:600;margin:40px 0 12px;padding-top:4px}
+h3{font-size:15px;font-weight:600;margin:24px 0 8px}
+p{max-width:78ch}
+.mut{color:var(--mut)}.small{font-size:13px}
+.crumbs{font-size:13.5px;color:var(--mut);margin:0 0 14px}.crumbs a{color:var(--mut)}.crumbs a:hover{color:var(--a)}
+.head{background:var(--card);border:1px solid var(--rule);border-left:6px solid var(--set);border-radius:10px;padding:16px 20px;margin:0 0 6px}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;color:var(--set);background:color-mix(in srgb,var(--set) 10%,white);
+ border:1px solid color-mix(in srgb,var(--set) 30%,white);border-radius:999px;padding:2px 10px;margin-right:6px}
+.box{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:14px 18px;margin:12px 0;line-height:1.6}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}
+.flag{display:inline-block;margin-top:3px;color:#7A5300;font-weight:600;font-size:13px}
+nav.sections{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--page) 92%,transparent);backdrop-filter:blur(6px);
+ border-bottom:1px solid var(--rule);margin:0 -24px 8px;padding:10px 24px;display:flex;gap:6px;flex-wrap:wrap}
+nav.sections a{font-size:13.5px;font-weight:500;color:var(--ink);padding:4px 12px;border-radius:999px;border:1px solid var(--rule);background:var(--card)}
+nav.sections a:hover{border-color:var(--set);color:var(--set);text-decoration:none}
+.wrap{overflow-x:auto;background:var(--card);border:1px solid var(--rule);border-radius:10px;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:8px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule2)}
+tr:last-child td{border-bottom:none}
+th{font-size:12.5px;font-weight:600;color:var(--mut);background:#FAFBFC;border-bottom:1px solid var(--rule);white-space:nowrap}
+.wrap>table>tbody>tr:first-child th,.wrap table tr:first-child th{position:sticky;top:0;z-index:1}
+table.kv{background:var(--card);border:1px solid var(--rule);border-radius:10px;overflow:hidden;margin:10px 0}
+table.kv th{width:220px;background:#FAFBFC;color:var(--ink);font-size:13.5px;white-space:normal;border-bottom:1px solid var(--rule2)}
+td:first-child{color:var(--mut);font-variant-numeric:tabular-nums}
+tr.fire td{background:var(--fire)}tr.fire td:first-child{box-shadow:inset 4px 0 0 var(--firebar);color:#7A5300;font-weight:600}
+tbody tr:hover td{background:#F8FAFC}tr.fire:hover td{background:#FFEFB3}
+tr.note td:nth-child(3){color:var(--mut);font-style:italic}
+.tag{display:inline-block;border-radius:6px;padding:2px 8px;font-size:12px;font-weight:600;white-space:nowrap;border:1px solid transparent}
+.tag a{color:inherit}
+.meas{background:#E7F0FB;color:#1D4F91}.ref{background:#EEF1F5;color:#46525F}.sim{background:#EFEAFB;color:#5333A6}
+.edit{background:#FDF1DD;color:#8A5300}.hyp{background:#E4F4EA;color:#1F6B43}.prune{background:#FBE7E6;color:#9B2C22}
+.note{background:#F1F3F6;color:#5D6B7A}.commit{background:var(--ink);color:#fff}
+img{display:block;max-width:100%;height:auto;margin:10px 0;background:#fff;border:1px solid var(--rule);border-radius:10px;padding:10px}
+details{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:10px 14px;margin:10px 0}
+details>summary{cursor:pointer;font-weight:500;color:var(--a)}details[open]>summary{margin-bottom:8px}
+details .wrap{border:none;margin:0}
+/* index grids */
+td.cell .h{font-size:12.5px;font-weight:600;color:var(--mut);margin:12px 0 4px}td.cell .h:first-child{margin-top:0}
+td.cell .h.okh::before,td.cell .h.badh::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
+td.cell .h.okh::before{background:var(--ok)}td.cell .h.badh::before{background:var(--bad)}
+td.cell a{display:block;font-family:var(--mono);font-size:12px;line-height:1.45;padding:4px 8px;margin:3px 0;border-radius:6px;overflow-wrap:normal;word-break:normal;
+ background:#F7F9FB;border:1px solid var(--rule2);color:var(--ink)}
+td.cell a:hover{border-color:var(--set);color:var(--set);text-decoration:none}
+td.cell a .mut{font-family:var(--sans)}
+.grid td:first-child{color:var(--ink);width:200px;min-width:170px}.grid td:first-child b{font-size:15px}
+body.idx .page{max-width:1440px}td.cell{min-width:0;width:20%}
+.settings{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:18px 0}
+.settings a.card{display:block;background:var(--card);border:1px solid var(--rule);border-top:6px solid var(--set);border-radius:10px;padding:16px 18px;color:var(--ink)}
+.settings a.card:hover{text-decoration:none;border-color:var(--set)}
+.settings .name{font-size:19px;font-weight:600;margin-bottom:2px}.settings .what{color:var(--mut);font-size:14px;margin:4px 0 12px}
+.settings .count{font-size:14px;font-weight:600;color:var(--set)}
+.settings .card.empty{opacity:.55}
+.legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px 18px;margin:14px 0 4px;padding:0;list-style:none}
+.legend li{font-size:14px}.legend b{display:inline-block;min-width:28px;color:var(--ink)}
+</style></head><body><div class="page">
+<h1>Trajectories behind the five errors</h1>
+<p class="mut">Real episodes from four agents (Codex gpt-6.1-sol, GLM-5.3, DeepSeek-V4.1-Flash, Claude Opus 5.5) in four settings. For each error and agent, up
+to three episodes where a correct answer carried the error and three where a wrong one did. Each page shows the real answer, every submission, the episode's
+process matrix, the graphs and the full trajectory with the step where the error fires highlighted. These pages show the hidden truth; they are for analysis,
+not for agents.</p>
+<ul class="legend"><li><b>E1</b> true cause never in the ledger</li><li><b>E2</b> rival hypotheses still alive</li><li><b>E3</b> contradicting reading ignored</li><li><b>E4</b> rejected answer re-committed</li><li><b>E5</b> large real-to-sim gap</li></ul>
+<div class="settings"><a class="card" style="--set:#2a78d6" href="Discovery/index.html"><div class="name">Discovery</div><div class="what">Find a buried ore body with DC soundings and magnetics, past look-alike bodies.</div><div class="count">112 trajectory pages</div></a><a class="card" style="--set:#eb6834" href="Diagnosis/index.html"><div class="name">Diagnosis</div><div class="what">Find the defects in a transistor from I-V and C-V measurements.</div><div class="count">106 trajectory pages</div></a><a class="card" style="--set:#1baf7a" href="Calibration/index.html"><div class="name">Calibration</div><div class="what">Find what is wrong with a chip's thermal model, or with its sensors, and repair the model.</div><div class="count">110 trajectory pages</div></a><a class="card" style="--set:#4a3aa7" href="Monitoring/index.html"><div class="name">Monitoring</div><div class="what">Watch a battery age over 240 cycles and say whether, how and when it went wrong, or a sensor did.</div><div class="count">108 trajectory pages</div></a></div>
+</div></body></html>
